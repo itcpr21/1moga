@@ -55,4 +55,24 @@ public void deleteproduct(int id){
     }
 
 
+public void edit(int id , String product, float price){
+       try {
+           Class.forName(con.forname);
+           Connection ccon = (Connection) DriverManager.getConnection(con.drive,con.usern,con.rpass);
+        PreparedStatement prep = (PreparedStatement) ccon.prepareStatement("update tblproduct set product ? , price = ? where id = ?");
+        prep.setString(1, product);
+        prep.setFloat(2, price);
+        prep.setInt(3, id);
+        prep.executeUpdate();
+       } catch (ClassNotFoundException ex) {
+           Logger.getLogger(product_class.class.getName()).log(Level.SEVERE, null, ex);
+       } catch (SQLException ex) {
+           Logger.getLogger(product_class.class.getName()).log(Level.SEVERE, null, ex);
+       }
+{
+    
+}
+}
+
+
 }

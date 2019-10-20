@@ -21,7 +21,7 @@ import javax.swing.table.DefaultTableModel;
  * @author HP
  */
 public class Product extends javax.swing.JFrame {
-
+int pid =0;
     /**
      * Creates new form Product
      */
@@ -64,6 +64,7 @@ void refresh(){
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -115,6 +116,13 @@ void refresh(){
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Price:");
 
+        jButton3.setText("EDIT");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -127,15 +135,20 @@ void refresh(){
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel4Layout.createSequentialGroup()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(prc, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(qty, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
+                            .addComponent(prname, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addContainerGap(35, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(prc, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(qty, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(prname, javax.swing.GroupLayout.Alignment.LEADING))
-                .addContainerGap(35, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(79, 79, 79))))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,7 +171,9 @@ void refresh(){
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addGap(136, 136, 136))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton3)
+                .addGap(107, 107, 107))
         );
 
         javax.swing.GroupLayout addproductLayout = new javax.swing.GroupLayout(addproduct.getContentPane());
@@ -345,7 +360,18 @@ if(tblrow==-1){
     }//GEN-LAST:event_searchActionPerformed
 
     private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
-        int row=edit
+        int row= prodtbl.getSelectedRow();
+        if(row==-1){
+            
+        }
+        else{
+            pid = Integer.parseInt(prodtbl.getValueAt(row, 0).toString());
+           prname.setText(prodtbl.getValueAt(row, 1).toString());
+           prc.setText(prodtbl.getValueAt(row, 3).toString());
+           addproduct.setVisible(true); addproduct.setLocationRelativeTo(this);
+            
+        }
+        
     }//GEN-LAST:event_editActionPerformed
 
     private void txtfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtfieldActionPerformed
@@ -361,7 +387,7 @@ DefaultTableModel mdl = (DefaultTableModel) prodtbl.getModel();
        
          
          PreparedStatement st = (PreparedStatement) (Statement) cnn.prepareStatement("select * from tblproduct where product like ?");
-        ps.setstring(1,"%"+search.getText()+"%");
+        st.setString(1,"%"+search.getText()+"%");
          ResultSet rs = st.executeQuery("");
          while(rs.next()){
              mdl.addRow(new Object[]{rs.getString("id"),rs.getString("product"),rs.getString("quantity"),rs.getString("price")});
@@ -373,6 +399,19 @@ DefaultTableModel mdl = (DefaultTableModel) prodtbl.getModel();
             Logger.getLogger(Product.class.getName()).log(Level.SEVERE, null, ex);
         }        
     }//GEN-LAST:event_txtfieldKeyReleased
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+if(prname.getText().equals("")||prc.getText().equals("")){
+        
+    }
+else{
+    product_class prod1 = new product_class();
+    prod1.edit(pid, prname.getText(), Float.parseFloat(prc.getValue().toString()));
+    refresh();
+    addproduct.setVisible(false);
+}
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -416,6 +455,7 @@ DefaultTableModel mdl = (DefaultTableModel) prodtbl.getModel();
     private javax.swing.JButton edit;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
