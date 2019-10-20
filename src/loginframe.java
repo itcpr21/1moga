@@ -30,8 +30,7 @@ String password = new String (pass.getPassword());
 int x = logIn.enter(username, password);
 if(x==1){
 this.setVisible(false); 
-String name = logIn.name;
-new home(name).setVisible(true);
+new Product().setVisible(true);
 
 }else{
     JOptionPane.showMessageDialog(rootPane, "Incorrect Username or Password!","Message",JOptionPane.ERROR_MESSAGE);
