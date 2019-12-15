@@ -15,7 +15,7 @@ public class home extends javax.swing.JFrame {
      */
     public home(String name) {
         initComponents();this.setLocationRelativeTo(null);
-        userlab.setText("Welcome "+name);
+        jButton1.setText("Welcome "+name);
     }
 
     /**
